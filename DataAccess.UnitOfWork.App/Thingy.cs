@@ -18,7 +18,7 @@ namespace DataAccess.UnitOfWork.App
 
         public void DoWork()
         {
-            Console.WriteLine("DoWork started.");
+            Console.WriteLine("UnitOfWork App started.");
 
             var allStudents = this.context.Students;
             Console.WriteLine("Number of students: " + allStudents.Count().ToString());

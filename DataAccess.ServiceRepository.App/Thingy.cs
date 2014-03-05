@@ -2,33 +2,32 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using DataAccess.EFContext.Data;
+using DataAccess.ServiceRepository.Data;
 
-namespace DataAccess.EFContext.App
+namespace DataAccess.ServiceRepository.App
 {
     public class Thingy
     {
-        private readonly StudentContext context;
+        private readonly IStudentServiceRepository repository;
         public bool WaitWhenFinished { get; set; }
 
-        public Thingy(StudentContext context)
+        public Thingy(IStudentServiceRepository repository)
         {
-            this.context = context;
+            this.repository = repository;
         }
 
         public void DoWork()
         {
-            Console.WriteLine("EFContext App started.");
+            Console.WriteLine("ServiceRepository App started.");
 
-            var allStudents = this.context.Students;
+            var allStudents = this.repository.GetAllStudents();
             Console.WriteLine("Number of students: " + allStudents.Count().ToString());
 
             Console.WriteLine("Adding a student");
             var newStudent = new Student { Name = "William Adama" };
-            this.context.Students.Add(newStudent);
-            this.context.SaveChanges();
+            this.repository.Add(newStudent);
 
-            var allStudentsAgain = this.context.Students;
+            var allStudentsAgain = this.repository.GetAllStudents();
             Console.WriteLine("Number of students: " + allStudentsAgain.Count().ToString());
 
             if (WaitWhenFinished)

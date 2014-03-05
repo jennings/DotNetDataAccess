@@ -33,7 +33,7 @@ Framework usually depict this architecture.
 
 The good thing about this architecture is that it's simple. Since the DbContext
 is already a unit-of-work object, no extra plumbing is required to update the
-database in a transaction.
+database in a transaction. The `IDbSet<T>` properties are the repositories.
 
 It's also testable, since the properties on the `DbContext` are interfaces.
 
@@ -46,11 +46,40 @@ namespace), this pattern ensures that changes need to be made across your
 entire project.
 
 
+Service Repository
+-------------------
+
+I consider this an anti-pattern. I believe this is more-or-less the pattern Rob
+Conery references in his blog post [Repositories on top UnitOfWork are a bad
+idea][conery-repositories].
+
+In the Service Repository pattern (the "Suppository" pattern, if you will), the
+`Repository` object is requested directly by consumers. The repository also
+contains some business logic, therefore I would call this a service. Hence, the
+name.
+
+This has the problems Rob Conery describes:
+
+* It encourages you to add lots of `GetStudentByX`-like methods to your
+  repository because callers have no access to the underlying `IQueryable`.
+
+* If you put `SaveChanges()` on the repository, it encourages someone to call
+  `SaveChanges()` who doesn't know everything that the `DbContext` has been
+  used for. Will that `SaveChanges()` commit other things? Who knows!
+
+* If you hide the `SaveChanges()` method from callers, only the repository can
+  perform an atomic operation. Your caller can only do the operations your
+  repository has provided. To make a larger operation atomic, you have to shove
+  more and more business logic into the data access layer.
+
+[conery-repositories]: http://www.wekeroad.com/2014/03/04/repositories-and-unitofwork-are-not-a-good-idea/
+
+
 UnitOfWork
 -----------
 
-This adds an extra interface to your `DbContext`. The application code only
-references the interface.
+This is my preferred pattern. This adds an extra interface to your `DbContext`.
+The application code only references the interface.
 
 The interface members are `IRepository` objects, so the upside is that other
 assemblies don't have to reference `EntityFramework.dll`. All ORM-specific code
