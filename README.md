@@ -75,13 +75,14 @@ This has the problems Rob Conery describes:
 [conery-repositories]: http://www.wekeroad.com/2014/03/04/repositories-and-unitofwork-are-not-a-good-idea/
 
 
-UnitOfWork
+IUnitOfWork
 -----------
 
-This is my preferred pattern. This adds an extra interface to your `DbContext`.
-The application code only references the interface.
+This is my preferred pattern. This adds an extra interface to your `DbContext`
+which abstracts the "unit-of-worky" part of the DbContext. The application code
+only references the interface.
 
-The interface members are `IRepository` objects, so the upside is that other
+The interface members are `IRepository<T>` objects, so the upside is that other
 assemblies don't have to reference `EntityFramework.dll`. All ORM-specific code
 is contained within the `Repository<T>` and `StudentContext` objects.
 
@@ -89,3 +90,11 @@ The downside is that you now have a `Repository<T>` to maintain. Luckly, all
 the methods are straightforward to implement. The Repository object isn't
 testable, but it isn't meant to be. It's just an object that proxies requests
 onto `DbSet`s, there's not much there to test.
+
+If your data access layer is in the same assembly as the service layer, then
+this pattern doesn't have much benefit over the EFContext pattern for most
+cases. The `IRepository<T>` is slightly easier to mock/fake than `IDbSet<T>`,
+but that's all. If your data access layer is separated into its own assembly,
+then this pattern makes it clear how to access the data, doesn't require extra
+assembly references, and gives the caller an `IQueryable` interface to the
+data.
