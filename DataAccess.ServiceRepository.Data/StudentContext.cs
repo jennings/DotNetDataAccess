@@ -10,7 +10,10 @@ namespace DataAccess.ServiceRepository.Data
     internal class StudentContext : DbContext
     {
         public virtual IDbSet<Student> Students { get; set; }
-        public virtual IDbSet<Course> Courses { get; set; }
-        public virtual IDbSet<Enrollment> Enrollments { get; set; }
+
+        public StudentContext()
+        {
+            Database.SetInitializer(new DropCreateDatabaseAlways<StudentContext>());
+        }
     }
 }

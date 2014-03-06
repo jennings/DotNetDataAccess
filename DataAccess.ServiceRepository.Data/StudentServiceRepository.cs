@@ -41,7 +41,8 @@ namespace DataAccess.ServiceRepository.Data
             else
             {
                 existingStudent.Name = student.Name;
-                // and more...
+                existingStudent.IsGraduated = student.IsGraduated;
+                existingStudent.YearsCompleted = student.YearsCompleted;
                 this.context.SaveChanges();
             }
         }

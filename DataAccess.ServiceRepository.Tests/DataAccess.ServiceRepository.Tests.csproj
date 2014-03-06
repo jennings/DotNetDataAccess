@@ -46,7 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ThingyTestsWithMock.cs" />
+    <Compile Include="StudentServiceTestsWithMock.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
