@@ -16,8 +16,8 @@ namespace DataAccess.EFContext.App
         {
             var container = new WindsorContainer();
             container.Register(
-                Component.For<Thingy>()
-                    .ImplementedBy<Thingy>()
+                Component.For<StudentService>()
+                    .ImplementedBy<StudentService>()
                 );
             DataAccess.EFContext.Data.Windsor.Configure(container);
             return container;

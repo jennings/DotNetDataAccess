@@ -18,7 +18,7 @@ namespace DataAccess.EFContext.Tests
         ICollection<Student> mockBackingCollection;
         Mock<IDbSet<Student>> mockDbSet;
         Mock<StudentContext> contextWithMock;
-        Thingy thingyWithMock;
+        StudentService serviceWithMock;
 
         [SetUp]
         public void SetUp()
@@ -31,14 +31,39 @@ namespace DataAccess.EFContext.Tests
             mockDbSet.Setup(s => s.Provider).Returns(mockBackingCollection.AsQueryable().Provider);
             contextWithMock = new Mock<StudentContext>();
             contextWithMock.SetupGet(s => s.Students).Returns(mockDbSet.Object);
-            thingyWithMock = new Thingy(contextWithMock.Object);
+            serviceWithMock = new StudentService(contextWithMock.Object);
         }
 
         [Test]
-        public void EFContext_DoWork_AddsAStudent_WithMockDbSet()
+        public void EFContext_WithMock_CreateStudents_CreatesStudents()
         {
-            thingyWithMock.DoWork();
-            mockDbSet.Verify(s => s.Add(It.IsAny<Student>()));
+            serviceWithMock.CreateStudents();
+            mockDbSet.Verify(r => r.Add(It.IsAny<Student>()), Times.AtLeastOnce);
+        }
+
+        [Test]
+        public void EFContext_WithMock_PromoteAllClasses_IncrementsYears()
+        {
+            var student = new Student { YearsCompleted = 2, IsGraduated = false };
+            mockBackingCollection.Add(student);
+
+            serviceWithMock.PromoteAllClasses();
+
+            Assert.AreEqual(3, student.YearsCompleted);
+        }
+
+        [Test]
+        public void EFContext_WithMock_PromoteAllClasses_GraduatesStudents()
+        {
+            var eligibleStudent = new Student { YearsCompleted = 3, IsGraduated = false };
+            var ineligibleStudent = new Student { YearsCompleted = 2, IsGraduated = false };
+            mockBackingCollection.Add(eligibleStudent);
+            mockBackingCollection.Add(ineligibleStudent);
+
+            serviceWithMock.PromoteAllClasses();
+
+            Assert.True(eligibleStudent.IsGraduated);
+            Assert.False(ineligibleStudent.IsGraduated);
         }
     }
 }
