@@ -7,6 +7,7 @@ namespace DataAccess.ServiceRepository.Data
     {
         IEnumerable<Student> GetAllStudents();
         Student GetStudentById(int id);
+        void PromoteAllClassesAtomic();
 
         void Add(Student student);
         void Update(Student student);

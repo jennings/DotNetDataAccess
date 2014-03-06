@@ -56,5 +56,21 @@ namespace DataAccess.ServiceRepository.Data
                 this.context.SaveChanges();
             }
         }
+
+        public void PromoteAllClassesAtomic()
+        {
+            var eligibleStudents =
+                this.context.Students
+                .Where(s => !s.IsGraduated);
+
+            foreach (var student in eligibleStudents)
+            {
+                student.YearsCompleted += 1;
+                if (student.YearsCompleted >= 4)
+                    student.IsGraduated = true;
+            }
+
+            this.context.SaveChanges();
+        }
     }
 }

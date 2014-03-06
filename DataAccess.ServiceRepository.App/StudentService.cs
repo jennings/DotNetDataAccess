@@ -35,6 +35,7 @@ namespace DataAccess.ServiceRepository.App
                 .Where(s => !s.IsGraduated)
                 .ToList(); // We must .ToList() it so we can call Update while iterating
 
+            // Note that this isn't an atomic operation
             foreach (var student in eligibleStudents)
             {
                 student.YearsCompleted += 1;
@@ -43,6 +44,11 @@ namespace DataAccess.ServiceRepository.App
 
                 this.repository.Update(student);
             }
+        }
+
+        public void PromoteAllClassesAtomic()
+        {
+            this.repository.PromoteAllClassesAtomic();
         }
     }
 }
