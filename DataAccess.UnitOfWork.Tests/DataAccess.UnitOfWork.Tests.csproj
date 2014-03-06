@@ -45,10 +45,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ThingyTestsWithMock.cs" />
+    <Compile Include="StudentServiceTestsWithMock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Support\FakeRepository.cs" />
-    <Compile Include="ThingyTestsWithFake.cs" />
+    <Compile Include="StudentServiceTestsWithFake.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -16,8 +16,8 @@ namespace DataAccess.UnitOfWork.App
         {
             var container = new WindsorContainer();
             container.Register(
-                Component.For<Thingy>()
-                    .ImplementedBy<Thingy>()
+                Component.For<StudentService>()
+                    .ImplementedBy<StudentService>()
                 );
             DataAccess.UnitOfWork.Data.Windsor.Configure(container);
             return container;

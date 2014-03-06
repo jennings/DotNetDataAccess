@@ -52,8 +52,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Course.cs" />
-    <Compile Include="Enrollment.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="IStudentUnitOfWork.cs" />
     <Compile Include="Repository.cs" />
